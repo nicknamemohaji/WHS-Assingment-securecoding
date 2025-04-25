@@ -1,9 +1,10 @@
-from project.app import app
+import pytest
 
+from config import client
 
-def test_index():
-    tester = app.test_client()
-    response = tester.get("/", content_type="html/text")
+@pytest.mark.order(1)
+def test_index(client):
+    response = client.get("/", content_type="html/text")
 
     assert response.status_code == 200
     assert '로그인'.encode() in response.data
