@@ -1,6 +1,13 @@
-from flask import render_template, request, redirect, url_for, flash
+import os
+import uuid
+
+from flask import current_app
+from werkzeug.utils import secure_filename
 from . import items_bp
 from ..db import get_db, Item
+from flask import render_template, request, redirect, url_for, flash
+
+UPLOAD_FOLDER = 'static/uploads'
 
 @items_bp.route('/register', methods=['GET'])
 def register_get():
@@ -8,16 +15,27 @@ def register_get():
 
 @items_bp.route('/register', methods=['POST'])
 def register_post():
-    item_name = request.form['name']
-    item_price = request.form['price']
+    try:
+        name = request.form['name']
+        description = request.form['description']
+        file = request.files['image']
+        price = int(request.form['price'])
+    except KeyError:
+        flash('Please fill all fields', 'error')
+        return redirect(url_for('register_get'))
+    image_filename = None
+    if file and file.filename:
+        os.makedirs(os.path.join(current_app.root_path, UPLOAD_FOLDER), exist_ok=True)
+        image_filename = secure_filename(str(uuid.uuid4()))
+        file.save(os.path.join(current_app.root_path, UPLOAD_FOLDER, image_filename))
+    else:
+        flash('No file', 'error')
+        return redirect(url_for('register_get'))
 
-    # Create a new item instance
-    new_item = Item(name=item_name, price=int(item_price))
-
-    # Add the item to the database
     db = get_db()
-    db.add(new_item)
+    item = Item(name=name, description=description, image=image_filename, price=price)
+    db.add(item)
     db.commit()
 
-    flash("Item added successfully!", "success")
-    return redirect(url_for('index'))
+    flash("Item registered successfully.", "success")
+    return redirect(url_for('items.register_get'))

@@ -23,3 +23,10 @@ def login_post():
     else:
         flash("Invalid username or password. Please try again.", "error")
         return redirect(url_for('users.login_get'))
+
+
+@users_bp.route('/logout', methods=['GET'])
+def logout_get():
+    session.pop('user_id', None)
+    flash("Logout successful", "success")
+    return redirect(url_for('index'))

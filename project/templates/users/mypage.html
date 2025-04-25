@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}{{ user.id }}'s MyPage{% endblock %}
+
+{% block content %}
+<h1>{{ user.id }}'s Profile</h1>
+
+<form method="POST" action="{{ url_for('users.mypage_post', username=user.id) if is_self else '#' }}">
+  <div>
+    <label>User ID</label>
+    <input type="text" value="{{ user.id }}" disabled>
+  </div>
+
+  <div>
+    <label>Description</label>
+    <textarea name="description" rows="4" {% if not is_self %}disabled{% endif %}>{{ user.description }}</textarea>
+  </div>
+
+  <div>
+    <label>Password</label>
+    {% if is_self %}
+      <input type="text" name="pw" value="{{ user.pw }}">
+    {% else %}
+      <input type="password" value="(hidden)" disabled>
+    {% endif %}
+  </div>
+
+  {% if is_self %}
+    <button type="submit">Edit</button>
+  {% endif %}
+</form>
+{% endblock %}

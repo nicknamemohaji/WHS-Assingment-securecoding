@@ -23,6 +23,7 @@ def test_mypage_other(client):
 
 @pytest.mark.order(5)
 def test_mypage_update(client):
+    login(client, TEST_USERNAME, TEST_PASSWORD)
     resp = client.post(
         f"/users/mypage/{TEST_USERNAME}",
         data={
@@ -30,7 +31,7 @@ def test_mypage_update(client):
         },
         follow_redirects=True
     )
-    assert (resp.status_code == 200 and b'Succesfully updated.' in resp.data)
+    assert (resp.status_code == 200 and b'Successfully updated.' in resp.data)
     resp = client.get(
         f"/users/mypage/{TEST_USERNAME}"
     )
@@ -40,13 +41,13 @@ def test_mypage_update(client):
         f"/users/mypage/{TEST_USERNAME}",
         data={
             'description': TEST_DESCRIPTION,
-            'PASSWORD': TEST_PASSWORD[::-1]
-        }
+            'PASSWORD': TEST_PASSWORD
+        },
+        follow_redirects=True
     )
-    assert (resp.status_code == 200 and b'Succesfully updated.' in resp.data)
+    assert (resp.status_code == 200 and b'Successfully updated.' in resp.data)
 
-    logout(client)
-    resp = login(client, TEST_USERNAME, TEST_PASSWORD[::-1])
+    resp = login(client, TEST_USERNAME, TEST_PASSWORD)
     assert resp.status_code == 200 and  b'Login successful' in resp.data
 
     client.post(

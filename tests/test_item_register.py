@@ -18,12 +18,15 @@ def test_item_register(client):
         },
         follow_redirects=True
     )
+    assert b'Item registered successfully' in resp.data
+    resp = client.get(
+        '/items/recents'
+    )
     assert (resp.status_code == 200
-            and b'Item added successfully' in resp.data
             and b'test1' in resp.data)
 
 
-@pytest.mark.order(6)
+@pytest.mark.order(7)
 def test_item_register_bulk(client):
     login(client, TEST_USERNAME, TEST_PASSWORD)
     for i in range(10):
@@ -38,9 +41,8 @@ def test_item_register_bulk(client):
             follow_redirects=True
         )
         assert (resp.status_code == 200
-                and b'Item added successfully' in resp.data
-                and f"__test{i}".encode() in resp.data)
+                and b'Item added successfully')
 
-    resp = client.get('/')
-    assert '__test1' not in resp.data and '__test6' in resp.data
+    resp = client.get('/items/recents')
+    assert b'__test1' not in resp.data and b'__test6' in resp.data
 

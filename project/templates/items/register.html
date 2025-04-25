@@ -1,18 +1,25 @@
 {% extends "base.html" %}
 
-{% block title %}Register New Item{% endblock %}
+{% block title %}Register Item{% endblock %}
 
 {% block content %}
-<h1>Register New Item</h1>
-<form method="POST">
+<h2>Register New Item</h2>
+<form method="POST" action="{{ url_for('items.register_post') }}" enctype="multipart/form-data">
   <div>
     <label for="name">Item Name</label>
-    <input type="text" name="name" id="name" required>
+    <input type="text" id="name" name="name" required>
   </div>
+
   <div>
-    <label for="price">Price</label>
-    <input type="number" name="price" id="price" required>
+    <label for="description">Description</label>
+    <textarea id="description" name="description" rows="4"></textarea>
   </div>
-  <button type="submit">Add Item</button>
+
+  <div>
+    <label for="image">Photo</label>
+    <input type="file" id="image" name="image">
+  </div>
+
+  <button type="submit">Register</button>
 </form>
 {% endblock %}
