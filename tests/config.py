@@ -2,6 +2,11 @@ import pytest
 
 from project.app import app
 
+app.config.update({
+    "TESTING": True,
+    "WTF_CSRF_ENABLED": False,   # ← disable CSRF for tests
+})
+
 @pytest.fixture
 def client():
     yield app.test_client()

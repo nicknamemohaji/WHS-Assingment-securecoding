@@ -36,7 +36,7 @@ def test_item_register_bulk(client):
             '/items/register',
             data={
                 'name': f"커피_{i}",
-                'price': i,
+                'price': i + 10,
                 'description': 'test description',
                 'image': (IMAGE / "test.png").open("rb")
             },
