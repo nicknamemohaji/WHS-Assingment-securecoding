@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}내 상품 목록{% endblock %}
+
+{% block content %}
+<h2>내가 등록한 상품</h2>
+<ul>
+  {% for item in items %}
+    <li>
+      <a href="{{ url_for('items.inspect_get', item_no=item.no) }}"><strong>{{ item.name }}</strong></a> (가격: {{ item.price }}원)
+      {% if item.hide %}
+        <span style="color: gray;">[숨김]</span>
+      {% endif %}
+      <form action="{{ url_for('items.mine_post', item_no=item.no) }}" method="POST">
+        <input type="hidden" name="visible" value="{{ 'False' if not item.hide else 'True' }}">
+        <button type="submit">
+          {{ '숨기기' if not item.hide else '보이기' }}
+        </button>
+      </form>
+    </li>
+  {% endfor %}
+</ul>
+{% endblock %}

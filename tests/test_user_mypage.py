@@ -58,6 +58,3 @@ def test_mypage_update(client):
         }
     )
 
-
-
-

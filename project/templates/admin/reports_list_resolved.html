@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Resolved Reports</h2>
+<ul>
+    <h2>Resolved Reports: {{ reports|length }}</h2>
+    {% for report in reports %}
+        <li>
+            <a href="{{ url_for('admin.admin_report_view', id=report.id) }}">{{ report.id }}</a>
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}

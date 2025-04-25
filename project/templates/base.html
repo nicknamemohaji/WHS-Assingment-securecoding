@@ -87,14 +87,17 @@
 </head>
 <body>
   <nav>
+    <a href="{{ url_for('index') }}">홈 화면</a>
+    <a href="{{ url_for('items.item_search_get') }}">상품 검색</a>
     {% if session.get('user_id') %}
       {#  }a href="{{ url_for('dashboard') }}">대시보드</a>
       <a href="{{ url_for('report') }}">신고하기</a>
       #}
-        <b>Hello {{ session.get('user_id') }}!</b>
-        <a href="{{ url_for('users.mypage_get', username=session.get('user_id')) }}">프로필</a>
+        <a href="{{ url_for('users.mypage_get', username=session.get('user_id')) }}">프로필 관리</a>
         <a href="{{ url_for('items.register_get') }}">새 상품 등록</a>
+        <a href="{{ url_for('items.mine_get') }}">내 상품 관리</a>
         <a href="{{ url_for('users.logout_get') }}">로그아웃</a>
+        <div style="text-align: right;"><b>Hello {{ session.get('user_id') }}!</b></div>
     {% else %}
       <a href="{{ url_for('users.login_get') }}">로그인</a>
       <a href="{{ url_for('users.register_get') }}">회원가입</a>

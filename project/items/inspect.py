@@ -3,7 +3,7 @@ from . import items_bp
 from ..db import get_db, Item
 
 @items_bp.route('/<int:item_no>', methods=['GET'])
-def item_detail(item_no):
+def inspect_get(item_no):
     db = get_db()
     item = db.query(Item).filter_by(no=item_no, hide=False).first()
 

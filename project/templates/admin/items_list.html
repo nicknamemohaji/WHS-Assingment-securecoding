@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Item List</h2>
+<ul>
+    {% for item in items %}
+        <li>{{ item.name }}
+            {% if item.hide %}
+                (Hidden)
+            {% else %}
+                (Visible)
+            {% endif %}
+            <form method="post" action="{{ url_for('admin.admin_item_toggle_visibility', id=item.no) }}">
+                <button type="submit" name="visible" value="{{ 'False' if not item.hide else 'True' }}">
+                    {% if item.hide %} Show {% else %} Hide {% endif %}
+                </button>
+            </form>
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}

@@ -1,4 +1,5 @@
 from pathlib import Path
+import json
 
 from config import *
 
@@ -11,7 +12,7 @@ def test_item_register(client):
     resp = client.post(
         '/items/register',
         data={
-            'name': 'test1',
+            'name': '노트북',
             'price': 100,
             'description': 'test description',
             'image': (IMAGE / "test.png").open("rb")
@@ -22,8 +23,9 @@ def test_item_register(client):
     resp = client.get(
         '/items/recents'
     )
-    assert (resp.status_code == 200
-            and b'test1' in resp.data)
+    assert resp.status_code == 200
+    assert '노트북' == json.loads(resp.text)[-1]['name']
+
 
 
 @pytest.mark.order(7)
@@ -33,16 +35,16 @@ def test_item_register_bulk(client):
         resp = client.post(
             '/items/register',
             data={
-                'name': f"__test{i}",
+                'name': f"커피_{i}",
                 'price': i,
                 'description': 'test description',
                 'image': (IMAGE / "test.png").open("rb")
             },
             follow_redirects=True
         )
-        assert (resp.status_code == 200
-                and b'Item added successfully')
+        assert resp.status_code == 200
+        assert b'Item registered successfully' in resp.data
 
     resp = client.get('/items/recents')
-    assert b'__test1' not in resp.data and b'__test6' in resp.data
-
+    assert '커피_1' not in [d['name'] for d in json.loads(resp.text)]
+    assert '커피_6' in [d['name'] for d in json.loads(resp.text)]

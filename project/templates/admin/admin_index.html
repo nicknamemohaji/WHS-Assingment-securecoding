@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}ADMIN Page{% endblock %}
+
+{% block content %}
+  <h1>Admin Dashboard</h1>
+
+  <div class="link-container">
+    <a href="{{ url_for('admin.admin_reports') }}">Reports</a>
+    <a href="{{ url_for('admin.admin_items_list') }}">Items</a>
+    <a href="{{ url_for('admin.admin_users_list') }}">Users</a>
+  </div>
+{% endblock %}

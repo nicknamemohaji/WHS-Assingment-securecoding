@@ -1,7 +1,7 @@
 import os
 import uuid
 
-from flask import current_app
+from flask import current_app, session
 from werkzeug.utils import secure_filename
 from . import items_bp
 from ..db import get_db, Item
@@ -33,7 +33,7 @@ def register_post():
         return redirect(url_for('register_get'))
 
     db = get_db()
-    item = Item(name=name, description=description, image=image_filename, price=price)
+    item = Item(name=name, description=description, image=image_filename, price=price, author=session.get('user_id'))
     db.add(item)
     db.commit()
 
