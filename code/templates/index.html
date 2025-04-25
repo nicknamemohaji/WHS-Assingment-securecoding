@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Welcome to the Tiny Second-Hand Shop{% endblock %}
+
+{% block content %}
+  <h1>Welcome to the Tiny Second-Hand Shop!</h1>
+
+  <h2>Recent Items</h2>
+  <ul id="item-list">
+      <!-- List of items will be inserted here dynamically -->
+  </ul>
+
+  <script>
+      // Use Flask's `url_for` to dynamically generate the URL for the `recents` endpoint
+      const recentsUrl = "{{ url_for('items.recents') }}";
+
+      // Fetch the recent items from the dynamically generated URL
+      fetch(recentsUrl)
+          .then(response => response.json())  // Parse the JSON response
+          .then(data => {
+              // Get the HTML container where we want to display the items
+              const itemList = document.getElementById('item-list');
+
+              // Loop through the items and add them to the list
+              data.forEach(item => {
+                  const li = document.createElement('li');
+                  li.textContent = `${item.name} - ${item.price}`;
+                  itemList.appendChild(li);
+              });
+          })
+          .catch(error => {
+              console.error('Error fetching recent items:', error);
+          });
+  </script>
+{% endblock %}
