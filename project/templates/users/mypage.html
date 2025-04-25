@@ -6,6 +6,8 @@
 <h1>{{ user.id }}'s Profile</h1>
 
 <form method="POST" action="{{ url_for('users.mypage_post', username=user.id) if is_self else '#' }}">
+  {{ form.hidden_tag() }} <!-- CSRF token rendered by Flask-WTF -->
+
   <div>
     <label>User ID</label>
     <input type="text" value="{{ user.id }}" disabled>

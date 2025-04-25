@@ -5,18 +5,32 @@
 {% block content %}
 <h2>Register</h2>
 <form method="POST" action="{{ url_for('users.register_post') }}">
+  {{ form.hidden_tag() }}  <!-- CSRF token rendered by Flask-WTF -->
+
   <div>
-    <label for="username">Username</label>
-    <input type="text" id="username" name="username" required>
+    {{ form.username.label }}
+    {{ form.username(class="form-control") }}
+    {% for error in form.username.errors %}
+      <p class="error">{{ error }}</p>
+    {% endfor %}
   </div>
+
   <div>
-    <label for="password">Password</label>
-    <input type="password" id="password" name="password" required>
+    {{ form.password.label }}
+    {{ form.password(class="form-control") }}
+    {% for error in form.password.errors %}
+      <p class="error">{{ error }}</p>
+    {% endfor %}
   </div>
+
   <div>
-    <label for="description">Description</label>
-    <textarea id="description" name="description" rows="4"></textarea>
+    {{ form.description.label }}
+    {{ form.description(class="form-control", rows=4) }}
+    {% for error in form.description.errors %}
+      <p class="error">{{ error }}</p>
+    {% endfor %}
   </div>
-  <button type="submit">Register</button>
+
+  <button type="submit" class="btn btn-primary">Register</button>
 </form>
 {% endblock %}

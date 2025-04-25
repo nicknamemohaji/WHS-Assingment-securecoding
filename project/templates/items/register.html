@@ -4,22 +4,40 @@
 
 {% block content %}
 <h2>Register New Item</h2>
+
 <form method="POST" action="{{ url_for('items.register_post') }}" enctype="multipart/form-data">
+  {{ form.hidden_tag() }}  <!-- CSRF token rendered by Flask-WTF -->
+
   <div>
     <label for="name">Item Name</label>
-    <input type="text" id="name" name="name" required>
+    {{ form.name(class="form-control") }}
+    {% for error in form.name.errors %}
+      <p class="error">{{ error }}</p>
+    {% endfor %}
   </div>
 
   <div>
     <label for="description">Description</label>
-    <textarea id="description" name="description" rows="4"></textarea>
+    {{ form.description(class="form-control", rows=4) }}
+  </div>
+
+  <div>
+    <label for="price">Price</label>
+    {{ form.price(class="form-control") }}
+    {% for error in form.price.errors %}
+      <p class="error">{{ error }}</p>
+    {% endfor %}
   </div>
 
   <div>
     <label for="image">Photo</label>
-    <input type="file" id="image" name="image">
+    {{ form.image() }}
+    {% for error in form.image.errors %}
+      <p class="error">{{ error }}</p>
+    {% endfor %}
   </div>
 
-  <button type="submit">Register</button>
+  <button type="submit" class="btn btn-primary">{{ form.submit.label }}</button>
 </form>
+
 {% endblock %}
