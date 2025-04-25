@@ -4,6 +4,7 @@ from config import client
 
 @pytest.mark.order(1)
 def test_index(client):
+    # do test
     response = client.get("/", content_type="html/text")
 
     assert response.status_code == 200

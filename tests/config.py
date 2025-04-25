@@ -1,17 +1,10 @@
-import os
-
 import pytest
 
 from project.app import app
 
 @pytest.fixture
 def client():
-    DB_NAME = '/db_test.sqlite3'
-    DB_PATH = '../project/instance' + DB_NAME
-    if os.path.exists(DB_PATH):
-        os.remove(DB_PATH)
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite://' + DB_NAME
-    yield app.test_client() # tests run here
+    yield app.test_client()
 
 
 TEST_USERNAME = "testuser"
@@ -25,7 +18,8 @@ def register(client, username, password, description):
             'username': username,
             'password': password,
             'description': description
-        }
+        },
+        follow_redirects=True
     )
 
 def login(client, username, password):
