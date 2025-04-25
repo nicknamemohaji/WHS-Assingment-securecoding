@@ -8,9 +8,13 @@ def register_get():
 
 @users_bp.route('/register', methods=['POST'])
 def register_post():
-    user_id = request.form['username']
-    password = request.form['password']
-    description = request.form.get('description', '')
+    try:
+        user_id = request.form['username']
+        password = request.form['password']
+        description = request.form['description']
+    except KeyError:
+        flash('fill in all fields', 'error')
+        return redirect(url_for('users.register_get'))
 
     db = get_db()
 
